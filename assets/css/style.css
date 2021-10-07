@@ -18,7 +18,7 @@ body{
 
 
 h1 {
-    font-size: 5vw;
+    font-size: 6vw;
     color: black;
     margin-bottom: 5px;
 }
@@ -68,10 +68,10 @@ h2 {
 }
 
 .btn {
-    font-size: 2rem;
+    font-size: 2vw;
     color: white;
     padding: 2rem 0;
-    width: 30rem;
+    width: 20%;
     text-align: center;
     margin-bottom: 1rem;
     text-decoration: none;
@@ -94,13 +94,13 @@ h2 {
     transform: none;
 }
 
-
-
 .choices {
     display: flex;
     flex-wrap: wrap;
     padding-left: 100px;
+    padding-top: 20px;
     justify-content: center;
+    border-top: black solid 2px;
 }
 
 .choice-container {
@@ -111,7 +111,7 @@ h2 {
     width: 30%;
     border-radius: 20px;
     background: lightblue;
-    font-size: 5vw;
+    font-size: 4vw;
     min-width: 100px;
 }
 
@@ -142,26 +142,11 @@ h2 {
 
 .clock {
     justify-content: space-between;
+    font-size: 3vw;
 }
 
-#question {
-    display: flex;
-    justify-content: start;
-    margin:0;
-    width: 100%;
-    padding-right: 100px;
-}
-
-#questionText{
-    display: flex;
-    justify-content: space-between;
-    margin-right: 100px;
-}
-
-#box {
-    display: flex;
-    flex-wrap: wrap;
-    /* justify-content: space-between; */
+.box-item {
+    margin-top: 2vw;
 }
 
 .box-prefix {
@@ -171,6 +156,27 @@ h2 {
 
 .box-main-text {
     margin-left: 100px;
+}
+#question {
+    display: flex;
+    justify-content: start;
+    margin:0;
+    width: 100%;
+    padding-right: 100px;
+    font-size: 5vw;
+}
+
+#questionText{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 100px;
+    font-size: 3vw;
+}
+
+#box {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
 }
 
 #box-main-text {
@@ -212,8 +218,23 @@ h2 {
         padding-top: 10px;
     }
     .choice-text {
-        padding: 1rem;
-        width: 40%;
+        padding-top: 2vw;
+        
+    }
+    #progressBar {
+        width: 10rem;
+        height: 1rem;
+    }
+}
+
+@media screen and (max-width: 500px){
+    .choices {
+        padding-top: 10px;
+    }
+    .choice-text {
+        padding:10px;
+        padding-left: 20px;
+
     }
     #progressBar {
         width: 10rem;
