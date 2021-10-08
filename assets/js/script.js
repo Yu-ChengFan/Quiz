@@ -1,16 +1,16 @@
 const question = document.querySelector('#question');
 const choices = Array.from(document.querySelectorAll('.choice-text'))
 const scoreText = document.querySelector('#score');
-
+const highScore = document.getElementById('hscore')
 
 let currentQuestion = {}
 let acceptingAnswers = true;
 let score = 0
 let questionCounter = 0
 let availableQuestions = [];
-let correctAnswer =  [];
+let correctAnswer = [];
 var questIndex = 0
-
+var timeLeft = 100;
 var timerEl = document.getElementById('countdown');
 
 
@@ -19,163 +19,152 @@ function Fail() {
     window.location.replace("./index.html")
 }
 
-function countdown() {
-    var timeLeft = 100;
+function countdown(i) {
 
     var timeInterval = setInterval(function () {
 
-        if (timeLeft >= 0) {
-            timerEl.textContent = timeLeft;
-            timeLeft--;
+        if (i >= 0) {
+            timerEl.textContent = i;
+            i--;
         } else {
             timerEl.textContent = '';
             clearInterval(timeInterval);
             Fail();
         }
     }, 1000);
+    return timeInterval
 }
 
 const questions = [
     {
-    question: "What is 6 / 2 ?",
-    choice1: "1",
-    choice2: "2",
-    choice3: "3",
-    choice4: "5",
-    answer: "3",
+        question: "What is 6 / 2 ?",
+        choice1: "1",
+        choice2: "2",
+        choice3: "3",
+        choice4: "5",
+        answer: "3",
     },
     {
-    question: "What is 7 * 11 ?",
-    choice1: "1",
-    choice2: "77",
-    choice3: "3",
-    choice4: "5",
-    answer: "77",
+        question: "What is 7 * 11 ?",
+        choice1: "1",
+        choice2: "77",
+        choice3: "6",
+        choice4: "5",
+        answer: "77",
     },
     {
-    question: "What is 2 + 2 ?",
-    choice1: "1",
-    choice2: "4",
-    choice3: "21",
-    choice4: "5",
-    answer: "4",
+        question: "What is 2 + 2 ?",
+        choice1: "1",
+        choice2: "4",
+        choice3: "21",
+        choice4: "5",
+        answer: "4",
     },
     {
-    question: "What is 4 + 4 ?",
-    choice1: "8",
-    choice2: "2",
-    choice3: "3",
-    choice4: "5",
-    answer: "8",
+        question: "What is 4 + 4 ?",
+        choice1: "8",
+        choice2: "2",
+        choice3: "3",
+        choice4: "5",
+        answer: "8",
     },
 ]
 
-const scorePoints = 100
-const maxQuestions = 4
+const scorePoints = 25
+
 
 
 
 function createStart() {
-    for (i=0; i < 4; i++){
+    for (i = 0; i < 4; i++) {
         availableQuestions.push(questions[i]["question"])
         correctAnswer.push(questions[i]["answer"])
     }
     // console.log(correctAnswer)
     const questionselected = document.getElementById("question")
     questionselected.textContent = availableQuestions[0]
-
+    var userName = window.prompt("your name?")
+    localStorage.setItem("user", userName)
+    return userName
 }
 
 
-
+/*
 function getNewQuestion(){
-        // questionselected.textContent
-    
 
-    // const questionselected = document.getElementById("question")
-    // questionselected.textContent = (questions[1].question)
 }
+*/
 
 
-function getNewChoices(){
+function getNewChoices(number) {
+    console.log(number);
+    const questionselected = document.getElementById("question")
+    var index = number
 
     choices.forEach(choice => {
         var quest = questions
 
-        currentQuestion = quest[questIndex]
+        currentQuestion = quest[index]
 
         const number = choice.dataset['number']
-        choice.innerText = currentQuestion['choice'+ number]
-        choice.addEventListener("click",function(event){
+        choice.innerText = currentQuestion['choice' + number]
+        choice.addEventListener("click", function (event) {
             var userchoice = event.target.textContent
-            if (correctAnswer.includes(userchoice)){
-                questIndex++
-                console.log(questIndex)
-                getNewChoices()
+            if (correctAnswer.indexOf(userchoice) !== -1) {
+                console.log(`score, ${score}`)
+                score += scorePoints;
+                scoreText.textContent = score;
+            } 
+            else {
+                currentTime = timerEl.textContent
+                currentTime -= 10
+                clearInterval(InitialCountDown);
+                InitialCountDown = countdown(currentTime)
             }
+            index++
+            if (index > 3) {
+                localStorage.setItem("Score", JSON.stringify(score));
+                console.log(highScore)
+                // var listItemEl = document.createElement("li"); 
+                // var TT = document.createElement("div");
+                // TT.id = "hScore";
+                // TT.innerHTML= localStorage.getItem("user")
+                // listItemEl.append(TT);
+                // highScore.append(listItemEl);
+                window.location.replace("./highscore.html")
+                return
+            }
+            questionselected.textContent = questions[index].question
+            getNewChoices(index)
         })
+        return score
     })
-
 }
 
-
-
-
 createStart()
-console.log(correctAnswer)
-getNewChoices()
+console.log(highScore)
+var InitialCountDown = countdown(100);
+getNewChoices(0)
 
-// function startQuiz() {
-//     questionCounter = 0
-//     score = 0
-//     availableQuestions = [...quizzes]
-//     getNewQuestion()
+/*
+var firstNameInput = document.querySelector("#first-name");
+var submitButton = document.querySelector("#sign-up");
+console.log("hi")
 
-//     if (availableQuestions.length === 0 || questionCounter > maxQuestions){
-//         localStorage.setItem('mostRecentScore', score)
-//         return window.location.assign('./end.html')
-//     }
-//     questionCounter++
-//     progressText.innerText = `Question ${questionCounter} of ${maxQuestions}`
-//     progressFull.style.width = `${(questionCounter/maxQuestions)*100}%`
+//var InitialCountDown = countdown(100);
 
-//     const questionIndex = Math.floor(Math.random()*availableQuestions.length)
-//     currentQuestion = availableQuestions[questionIndex]
-//     question.innerText = currentQuestion.question
+submitButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    console.log("hi")
+    // create user object from submission
+    var user = {
+        firstName: firstNameInput.value.trim()
+    
+    };
 
-//     choices.forEach(choice => {
-//         const number = choice.dataset['number']
-//         choice.innerText = currentQuestion['choice'+ number]
-//     })
-//     availableQuestions.splice(questionIndex, 1)
-//     acceptingAnswers =  true
+    // set new submission to local storage 
+    localStorage.setItem("user", JSON.stringify(user));
+    
+});
 
-// };
-// choices.forEach(choice => {
-//     choice.addEventListener('click', e => {
-//         if (!acceptingAnswers) return
-
-//         acceptingAnswers = false
-//         const selectedChoice = e.target
-//         const selectedAnswer = selectedChoice.dataset['number']
-
-//         let classToApply = selectedAnswer == currentQuestion.answer ? 'correct' :
-//         'incorrect'
-
-//         if(classToApply  === 'correct'){
-//             incrementscore(scorePoints)
-//         }
-//         selectedChoice.parentElement.classList.add(classToApply)
-//         setTimeout(()=>{
-//             selectedChoice.parentElement.classList.remove(classToApply)
-//             getNewQuestion()
-//         },1000)
-//     })
-// })
-// incrementScore = num => {
-//     score+= num
-//     scoreText.innerText = score
-// }
-
-
-countdown();
+*/
